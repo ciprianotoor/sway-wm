@@ -1,0 +1,418 @@
+/* 
+## Configuracion para WayBar
+## Autor:
+## Cipriano Javier Perez Garcia
+## ciprianotoor@gmail.com
+## https://github.com/
+## Version:
+## v 0.1
+*/
+*
+ {
+    border:        none;
+    border-radius: 0;
+    font-family:   FuraCode Nerd Font;
+    font-size:     11px;
+    font-weight:     bold;
+    box-shadow:    blue;
+    text-shadow:   black;
+    background: rgba(255, 255, 255, 0);
+    transition-duration: 0s;
+    min-width:  4px;
+    min-height: 4px;
+    
+}
+window#waybar {
+        color:     #ecf862;
+    padding-left: 2px;
+    padding-right: 2px;
+        
+}
+
+window#waybar.hidden {
+    opacity:0.02;
+}
+
+
+window#waybar.empty {
+    background-color: transparent;
+}
+window#waybar.solo {
+     background: rgba(255, 255, 255, 0);
+    border:blue;
+}
+#waybar.solo #window {
+  background: yellow;
+  color: red;
+                        }
+window#waybar.i3-sensible-terminal {
+    background-color: transparent;
+    border:  transparent;
+}
+
+#workspaces {
+    border-radius: 12px;
+    background: rgba(8, 3, 12, 0.39);
+    transition: none;
+    border: 2px solid #5a3172;
+    border-bottom: 2px solid #5a3172; 
+    
+}
+#workspaces button.visible {
+    color:      #fca6ac;
+     border-radius: 3.5;
+}
+#workspaces button {
+     transition: none;
+    color:      #fca6ac;
+    background: transparent;
+    border-radius: 0;
+}
+
+#workspaces button:hover {
+     border-top: 2.5px solid #9aedfe;
+    transition: none;
+    box-shadow: inherit;
+    text-shadow: inherit;
+    color: #9aedfe;
+}
+
+#workspaces button.focused {
+    border-top: 2.5px solid #9aedfe;
+    color: #9aedfe;
+    
+}
+#workspaces button.persistant {
+    color: #555;
+}
+
+#workspaces button.urgent {
+     color: #ffffff;
+     background: #a52a2a;
+     padding: 0 10px 0 10px;
+}
+
+#mode {
+    background: #64727D;
+}
+#custom-anydesk,
+#clock,
+#battery,
+#cpu,
+#memory,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#custom-Musica,
+#custom-cmus,
+#custom-anydesk,
+#custom-wf-recorder,
+#custom-curseradio,
+#custom-idle_inhibitor,
+#custom-music-launch,
+#custom-calc-bc,
+#i3-sensible-terminal,
+#custom-Musica,
+#custom-weather,
+
+                /*Modulos*/
+#custom-idle_inhibitor{
+               color: green;
+               
+                    } 
+
+#custom-curseradio{
+               color: blue;
+               
+                    } 
+#custom-wf-recorder{
+               margin-left: 1px;
+    margin-right: 1px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 12px;
+    transition: none;
+    color: #8cff7a;
+    background: #00060f;
+    border: 2px solid #5a3172;
+    border-bottom: 2px solid #5a3172;
+    border-top: 2px solid #5a3172
+               
+                    }         
+#custom-anydesk{
+    color: #0087DF;
+    margin: 0 12px;    
+       }
+
+#custom-Musica{
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-radius: 12px;
+    transition: none;
+    color: #4d4d4d;
+    background: rgba(119, 136, 153, 0.85);
+   
+        
+       }
+#custom-cmus{
+    margin-left: 4px;
+    margin-right: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 24px;
+    transition: none;
+    color: rgba(62, 238, 23, 0.85);
+    background: rgba(0, 0, 0, 0.85);  
+       }
+
+#custom-power {
+   
+    margin: 0 12px;
+    background-color: transparent; 
+         }
+#clock {
+   
+   margin-left: 1px;
+    margin-right: 1px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 12px;
+    transition: none;
+    color: #dd6699;
+    background: #00060f;  
+    border: 2px solid #5a3172;
+    border-bottom: 2px solid #5a3172;
+    border-top: 2px solid #5a3172;
+}
+
+#battery {
+     margin-left: 1px;
+    margin-right: 1px;
+    padding-left: 1px;
+    padding-right: 1px;
+    border-radius: 12px;
+    transition: none;
+    color: #fca6ac;
+    background: #00060f;
+    border: 2px solid #5a3172;
+    border-bottom: 2px solid #5a3172;
+    border-top: 2px solid #5a3172;
+     
+}
+
+#battery.charging {
+    
+    background: rgba(154, 205, 50, 0.85);
+    color:black;
+    
+}
+
+@keyframes blink {
+    to {
+        color:red;
+    }
+}
+
+#battery.critical:not(.charging) {
+    background-color: transparent;
+    color: #ffffff;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    border-bottom: 2px solid #FFFFFF;
+}
+
+label:focus {
+    background-color: #000000;
+}
+
+#cpu {
+     margin-left: 1px;
+    margin-right: 1px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 12px;
+    transition: none;
+    color: #ff575a;
+    background: #00060f;
+    border: 2px solid #5a3172;
+    border-bottom: 2px solid #5a3172;
+    border-top: 2px solid #5a3172;
+   
+   
+}
+
+#memory {
+      margin-left: 1px;
+    margin-right: 1px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 12px;
+    transition: none;
+    color: #ff575a;
+    background: #00060f;
+    border: 2px solid #5a3172;
+    border-bottom: 2px solid #5a3172;
+    border-top: 2px solid #5a3172;
+   
+    
+}
+
+#backlight {
+    margin-left: 1px;
+    margin-right: 1px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 12px;
+    transition: none;
+    color: #d059ff;
+    background: #00060f;  
+    border: 2px solid #5a3172;
+    border-bottom: 2px solid #5a3172;
+    border-top: 2px solid #5a3172;
+}
+
+#network {
+       margin-left: 1px;
+    margin-right: 1px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 12px;
+    transition: none;
+    color: #dd6699;
+    background: #00060f;  
+    border: 2px solid #5a3172;
+    border-bottom: 2px solid #5a3172;
+    border-top: 2px solid #5a3172;
+    
+     
+}
+
+#network.disconnected {
+    background-color: #04f40f;
+    color: #f4fffb; 
+    
+}
+#pulseaudio {
+    margin-left: 1px;
+    margin-right: 1px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 12px;
+    transition: none;
+    color: #4f9bf3;
+    background: #00060f;
+    border: 2px solid #5a3172;
+    border-bottom: 2px solid #5a3172;
+    border-top: 2px solid #5a3172;
+  
+}
+
+#pulseaudio.muted {
+  background-color: transparent;
+  color: #FF0000; 
+  
+  
+}
+
+#temperature {
+     margin-left: 1px;
+    margin-right: 1px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 12px;
+    transition: none;
+    color: #ffa733;  
+    background: #00060f;
+    border: 2px solid #5a3172;
+    border-bottom: 2px solid #5a3172;
+    border-top: 2px solid #5a3172;
+   
+   
+}
+
+#temperature.critical {
+    background-color: transparent; 
+    color: #f40404; 
+      
+}
+
+#tray {
+   
+    margin-left: 1px;
+    margin-right: 1px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 12px;
+    transition: none;
+    color: #8cff7a;
+    background: #00060f;
+    border: 2px solid #5a3172;
+    border-bottom: 2px solid #5a3172;
+    border-top: 2px solid #5a3172;
+        }
+
+#custom-recorder {
+	    margin-left: 2px;
+    margin-right: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-radius: 12px;
+    transition: none;
+    color: #4d4d4d;
+    background: rgba(119, 136, 153, 0.85);
+}
+#custom-music-launch{
+    margin-left: 1px;
+    margin-right: 1px;
+    padding-left: 1px;
+    padding-right: 1px;
+    border-radius: 2px;
+    transition: none;
+    color:   #8ddb34;
+    background: #16041f; 
+    border: 8px solid #00060f;
+    border-bottom: 2px solid #5a3172;
+    border-top: 2px solid #5a3172;
+    border-left: 2px solid #5a3172;
+    border-right: 2px solid #5a3172;
+}
+#custom-calc-bc{
+	font-size: 12px;
+	
+	color:white;
+}
+
+#custom-Musica{
+    margin-left: 4px;
+    margin-right: 4px;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-radius: 30px;
+    border-bottom: 2px solid #5a3172;
+    border-top: 2px solid #5a3172;
+    border-left: 2px solid #5a3172;
+    border-right: 2px solid #5a3172;
+    transition: none;
+    color: rgba(62, 238, 23, 0.85);
+    background: rgba(0, 0, 0, 0.85); 
+}
+
+#custom-weather {
+    margin-left: 1px;
+    margin-right: 1px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 12px;
+    transition: none;
+    color: #8cff7a;
+    background: #00060f;
+    border: 2px solid #5a3172;
+    border-bottom: 2px solid #5a3172;
+    border-top: 2px solid #5a3172;
+}

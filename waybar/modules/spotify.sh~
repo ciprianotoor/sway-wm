@@ -1,0 +1,35 @@
+#!/bin/sh
+#script para mostrar datos de reproduccion
+#:$(playerctl -l) ver reproductor
+#Estados de reproductores
+player_status=$(playerctl status 2> /dev/null)
+status_spotify=$(playerctl -p spotify status)
+status_chromium=$(playerctl -p chromium status)
+status_vlc=$(playerctl -p vlc status)
+status_rhythmbox=$(playerctl -p rhythmbox status)
+status_mpv=$(playerctl -p rhythmbox status) 
+type_player=$(playerctl -l 2> /dev/null)
+#medias datas
+        mds=$(playerctl -p spotify metadata xesam:title)-$(playerctl -p spotify metadata xesam:artist)-$(playerctl -p spotify metadata xesam:album)
+        mdg=$(playerctl metadata title)-$(playerctl metadata artist)-$(playerctl metadata album)
+#filtro de metadata
+if [ "$status_chromium" = "Playing" ]; then
+        echo "Chromium:$mdg $player_status"       
+elif [ "$status_chromium" = "Paused" ]; then
+    echo "Chromium:$(playerctl metadata title)- $player_status "
+elif [ "$status_spotify" = "Playing" ]; then
+    echo "$mds $player_status"
+elif [ "$status_spotify" = "Paused" ]; then
+    echo "$(playerctl -p spotify metadata xesam:title) :$player_status: "
+elif [ "$status_vlc" = "Playing" ]; then
+    echo "vlc:$mdg $player_status"    
+elif [ "$status_vlc" = "Paused" ]; then
+    echo "vlc:$mdg :$player_status: "  
+elif [ "$status_rhythmbox" = "Playing" ]; then
+    echo "Rhythmbox: $mdg $player_status"    
+elif [ "$status_rhythmbox" = "Paused" ]; then
+    echo "Rhythmbox:$mdg :$player_status: "  
+elif [ "$player_status" = "Stopped" ]; then
+    echo "Stop"
+fi
+

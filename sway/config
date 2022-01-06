@@ -1,0 +1,455 @@
+# Personalizacion de Sway
+## Autor:
+## Cipriano Javier Perez Garcia
+## ciprianotoor@gmail.com
+## https://github.com/
+## Version:
+## v 0.1
+
+assign [class="Spotify"] 3
+#ocultar waybar
+bindsym XF86PowerOff exec swaynag -t warning -m '¿Que desea hacer?' -b 'Cerrar Sesion' 'swaymsg exit' -b 'Suspender' 'swaymsg exec systemctl suspend' -b 'Apagar' 'poweroff' -b 'Reiniciar' 'systemctl reboot' -b 'Bloquear ' 'swaylock'
+bindsym alt+ctrl+l exec killall -SIGUSR1 waybar 
+#Funciones de poder
+ bindsym control+alt+Delete exec systemctl reboot
+ bindsym XF86PowerOff+alt exec poweroff
+ bindsym control+alt+s exec systemctl suspend
+## Reglas para las ventanas
+#cambiar entre escritorios
+bindsym alt+tab workspace next_on_output
+bindsym Shift+tab workspace prev_on_output
+
+bindcode 66 [app_id="^scratchpCad-.*"] scratchpad show
+
+assign [class="pulseeffects$"]		        workspace number 1 
+assign [app_id="pulseeffects$"]			workspace number 1
+assign [class="Pulseeffects$"]		        workspace number 1
+assign [app_id="Pulseeffects$"]			workspace number 1
+
+assign [app_id="telegramdesktop"]			workspace number 5
+
+exec_always import-gsettings
+#obtener teclas
+# xev | grep 'keycode'
+#swaylock bloquear pantalla
+#apt install swayidle
+# Copy this to ~/.config/sway/config and edit it to your liking.
+#comando para rastrear todas las teclas
+#xmodmap -pke
+#protector de pantalla
+# apt install swaylock
+  #Automitazar bloqueo de pantalla
+exec swayidle -w \
+	timeout 1800 'swaylock' \
+	timeout 1805 'swaymsg "output * dpms off"' \
+	resume 'swaymsg "output * dpms on"'
+	#atajos de teclado
+    bindsym ctrl+alt+b exec swaylock -f
+    
+#capturas de pantalla
+ 
+bindsym  Print exec grim   $(xdg-user-dir PICTURES )/$(date +'año:%Y,mes:%m,dia:%d,de:%I:%M:%S:%p_captura.png') && grim - | wl-copy 
+bindsym  Shift+Print exec grim -g "$(slurp)"  $(xdg-user-dir PICTURES )/$(date +'año:%Y,mes:%m,dia:%d,de:%I:%M:%S:%p_captura.png') && grim - | wl-copy 
+#Grabador de pantalla con scritp
+#sudo install wf-recorder slurp <-debemos instalar esos paquetes
+	#set $screenrecordercustom `bash $HOME/scripts/toggle-screen-recorder_custom.sh`
+	#bindsym  --to-code  Print exec $screenrecordercustom
+exec --no-startup-id blueman-tray 
+#teclado español 
+input * { 
+    xkb_layout " latam"
+   }
+# set brightness logarithmically by factor 1.4
+# .72 is just slightly bigger than 1 / 1.4
+#Brillo
+#control de brillo
+#apt install light
+#apt install brightnessctl
+# set brightness logarithmically by factor 1.4
+# .72 is just slightly bigger than 1 / 1.4
+#sudo usermod -aG video USERNAME <-agregar a usuario a control de brillo
+bindsym --locked XF86MonBrightnessUp exec light -S "$(light -G | awk '{ print int(($1 + .72) * 1.4) }')"
+bindsym --locked XF86MonBrightnessDown exec light -S "$(light -G | awk '{ print int($1 / 1.4) }')"
+
+ # AUDIO
+
+        set $audio_pause      cmus-remote -u
+        set $audio_next       cmus-remote -n
+        set $audio_prev       cmus-remote -r
+        set $audio_stop       cmus-remote -s
+
+ #teclas multimedias
+   bindsym XF86AudioPlay        exec --no-startup-id        playerctl  play-pause   &&   $audio_pause 
+   bindsym XF86AudioNext        exec --no-startup-id        playerctl  next         &&   $audio_next
+   bindsym XF86AudioPrev        exec --no-startup-id        playerctl  previous     &&   $audio_prev 
+  #bindsym Shift+XF86AudioPlay  exec --no-startup-id        playerctl  stop         &&   $audio_stop
+#wifi modo avion
+#bindsym  exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+# Use pactl to adjust volume in PulseAudio.
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +1% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -1% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+input <identifier> xkb_model "pc101"
+#Iniciar aplicaciones al iniciar sway
+#--start-minimized <- habilita el segundo plano
+	#exec --no-startup-id i3-msg 'workspace 1; exec pulseeffects &' 	
+	#exec --no-startup-id i3-msg 'workspace 1; exec i3-sensible-terminal -e cmus'
+	#exec --no-startup-id i3-msg 'workspace 2; exec i3-sensible-terminal -e cava'
+	#exec --no-startup-id i3-msg 'workspace 2; exec i3-sensible-terminal -e sudo su'
+	#exec --no-startup-id i3-msg 'workspace 3; exec "google-chrome-stable --app=https://web.whatsapp.com/"'
+	exec --no-startup-id indicator-cpufreq 
+	
+	
+
+# Gaps tamaño de bordes
+titlebar_border_thickness 0
+titlebar_padding 0
+default_border pixel 0
+smart_gaps on
+gaps inner 1
+smart_borders on
+set $inner_gaps 4
+set $outer_gaps 4
+for_window [class=".*"] border pixel 0
+gaps inner $inner_gaps
+gaps outer $outer_gaps
+# Borders
+hide_edge_borders both
+default_border none
+#default_border pixel 2
+## Transparencia
+set $opacity 0.9
+for_window [app_id="gnome-terminal"] opacity $opacity
+for_window [app_id="gedit"] opacity $opacity
+# Logo key. Use Mod1 for Alt.
+set $mod Mod4
+# Home row direction keys, like vim
+set $left h
+set $down j
+set $up k
+set $right l
+# Your preferred terminal emulator
+set $term x-terminal-emulator
+# Your preferred application launcher
+# Note: pass the final command to swaymsg so that the resulting window can be opened
+# on the original workspace that the command was run on.
+set $menu dmenu_path | dmenu | xargs swaymsg exec --
+
+### Output configuration
+#
+# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
+#output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+	#Fondo de pantalla
+	#apt install feh
+			
+	#Monitor de portatil 
+	workspace 1 output eDP-1 --primary
+	workspace 2 output eDP-1 --primary
+	workspace 3 output eDP-1 --primary
+	workspace 4 output eDP-1 --primary
+	workspace 5 output eDP-1 --primary
+	workspace 6 output eDP-1 --primary
+	workspace 7 output eDP-1 --primary
+	workspace 8 output eDP-1 --primary
+	workspace 9 output eDP-1 --primary
+	
+	  output eDP-1  bg /home/cipriano/Imágenes/ubuntustudio/UE3.jpg fill	 
+	 #Rotacion de monitor
+	 #output DP-2 transform 180
+	 
+	#Monitor vga
+	
+	workspace 10 output DP-2 --secundary			
+	 output DP-2   bg /home/cipriano/Imágenes/Arduino/2.jpg fill	
+
+	
+# Example configuration:
+#
+#   output HDMI-A-1 resolution 1920x1080 position 1920,0
+#
+# You can get the names of your outputs by running: swaymsg -t get_outputs
+
+
+
+### Idle configuration
+#
+# Example configuration:
+#
+# exec swayidle -w \
+#          timeout 300 'swaylock -f -c 000000' \
+#          timeout 600 'swaymsg "output * dpms off"' \
+#               resume 'swaymsg "output * dpms on"' \
+#          before-sleep 'swaylock -f -c 000000'
+#
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
+
+### Input configuration
+#
+# Example configuration:
+#
+#   input "2:14:SynPS/2_Synaptics_TouchPad" {
+#       dwt enabled
+#       tap enabled
+#       natural_scroll enabled
+#       middle_emulation enabled
+#   }
+#
+## Configuracion de trackpad o touchpad 
+## (habilita tab ligero a 1 dedo, menu contextual a 2 dedos y scroll click a 3 dedos)
+input type:touchpad {
+    tap enabled
+    natural_scroll enabled
+}
+# You can get the names of your inputs by running: swaymsg -t get_inputs
+# Read `man 5 sway-input` for more information about this section.
+
+### Key bindings
+#
+# Atajos de teclado personalizado
+    # Iniciar una terminal terminal
+    bindsym $mod+Return exec $term
+    #Aplicaciones
+    #apt install i3-sensible-terminal
+    bindsym $mod+t exec gedit
+    bindsym $mod+u exec i3-sensible-terminal -e cmus&
+    bindsym $mod+Shift+u exec pulseeffects&
+    bindsym $mod+o exec i3-sensible-terminal -e cava&
+    bindsym $mod+p exec i3-sensible-terminal -e sudo su
+    bindsym $mod+Shift+v exec i3-sensible-terminal -e vlc -I curses /home/cipriano/Vídeos
+    #apt install i3-wm
+    bindsym $mod+Shift+z exec i3-sensible-terminal -e vlc -I curses /home/cipriano/Vídeos
+    #bindsym $mod+Shift+z exec i3-sensible-terminal -e vlc -I curses https://radio.hostedred.com/radio/8050/radiorockcristiano      
+    bindsym $mod+Shift+n exec nautilus
+    bindsym $mod+n exec libreoffice
+    bindsym $mod+g exec firefox
+    bindsym $mod+Shift+g exec google-chrome
+    bindsym $mod+Shift+w exec i3-seo8nsible-terminal -e cvlc v4l2:///dev/video0
+    #navegador web lynx
+    bindsym $mod+Shift+b exec i3-sensible-terminal -e lynx www.google.com.ni -accept_all_cookies
+          
+    # Kill focused window
+    bindsym $mod+Shift+q kill
+
+    # Start your launcher
+    #bindsym $mod+d exec --no-startup-id dmenu_run  -l 10 -fn "Iosevka-9" -p Dmenu:
+    bindsym $mod+d exec ulauncher --no-window-shadow
+    #funciones del mouse
+    #Drag floating windows by holding down $mod and left mouse button.
+    #Resize them with right mouse button + $mod.
+    # Despite the name, also works for non-floating windows.
+    # Change normal to inverse to use left mouse button for resizing and right
+    # mouse button for dragging.
+    floating_modifier $mod normal
+    focus_follows_mouse yes
+    seat * hide_cursor 5000
+    ## The middle button over a titlebar kills the window
+	bindsym --release button2 kill
+   # Cerrar ventanas con la tecla de en medio del mouse
+        bindsym --whole-window $mod+button2 kill
+        # The right button toggles floating
+bindsym button3 floating toggle
+bindsym $mod+button3 floating toggle
+
+    # Reload the configuration file
+    bindsym $mod+Shift+c reload
+
+    # Mensaje de salida de sesion
+    bindsym $mod+Shift+e exec swaynag -t warning -m '¿Que desea hacer?' -b 'Cerrar Sesion' 'swaymsg exit' -b 'Suspender' 'swaymsg exec systemctl suspend' -b 'Apagar' 'poweroff' -b 'Reiniciar' 'systemctl reboot' -b 'Bloquear ' 'swaylock' 
+   
+
+
+# Moving around:
+#
+    # Move your focus around
+    bindsym $mod+$left focus left
+    bindsym $mod+$down focus down
+    bindsym $mod+$up focus up
+    bindsym $mod+$right focus right
+    # Or use $mod+[up|down|left|right]
+    bindsym $mod+Left focus left
+    bindsym $mod+Down focus down
+    bindsym $mod+Up focus up
+    bindsym $mod+Right focus right
+
+    # Move the focused window with the same, but add Shift
+    bindsym $mod+Shift+$left move left
+    bindsym $mod+Shift+$down move down
+    bindsym $mod+Shift+$up move up
+    bindsym $mod+Shift+$right move right
+    # Ditto, with arrow keys
+    bindsym $mod+Shift+Left move left
+    bindsym $mod+Shift+Down move down
+    bindsym $mod+Shift+Up move up
+    bindsym $mod+Shift+Right move right
+
+# Resize windows (as an alternative to using the mouse).
+mode "Resize" {
+    # Change focus.
+    # Doing this before resizing may be preferable.
+    bindsym $mod+j focus down
+    bindsym $mod+k focus up
+    bindsym $mod+l focus right
+
+    # Resize the border in the desired direction.
+    bindsym h       resize grow   left 10 px or 10 ppt
+    bindsym Shift+H resize shrink left 10 px or 10 ppt
+    bindsym j       resize grow   down 10 px or 10 ppt
+    bindsym Shift+J resize shrink down 10 px or 10 ppt
+    bindsym k       resize grow   up 10 px or 10 ppt
+    bindsym Shift+K resize shrink up 10 px or 10 ppt
+    bindsym l       resize grow   right 10 px or 10 ppt
+    bindsym Shift+L resize shrink right 10 px or 10 ppt
+
+    # Resize width and height symmetrically.
+    bindsym Left  resize shrink left  10 px or 10 ppt, resize shrink right 10 px or 10 ppt
+    bindsym Down  resize shrink down  10 px or 10 ppt, resize shrink up    10 px or 10 ppt
+    bindsym Up    resize grow   up    10 px or 10 ppt, resize grow   down  10 px or 10 ppt
+    bindsym Right resize grow   right 10 px or 10 ppt, resize grow   left  10 px or 10 ppt
+
+    bindsym v resize grow   up 100 px or 100 ppt, resize grow  down 100 px or 100 ppt
+    bindsym b resize grow left 100 px or 100 ppt, resize grow right 100 px or 100 ppt
+
+    # Assuming a workspace split into two, this balances the split.
+    bindsym s floating toggle, floating toggle
+
+    # Go back to normal. 
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym    Tab mode "default"
+}
+
+# Workspaces:
+#
+    # Switch to workspace
+    bindsym $mod+1 workspace 1
+    bindsym $mod+2 workspace 2
+    bindsym $mod+3 workspace 3
+    bindsym $mod+4 workspace 4
+    bindsym $mod+5 workspace 5
+    bindsym $mod+6 workspace 6
+    bindsym $mod+7 workspace 7
+    bindsym $mod+8 workspace 8
+    bindsym $mod+9 workspace 9
+    bindsym $mod+0 workspace 10
+    # Move focused container to workspace
+    bindsym $mod+Shift+1 move container to workspace 1
+    bindsym $mod+Shift+2 move container to workspace 2
+    bindsym $mod+Shift+3 move container to workspace 3
+    bindsym $mod+Shift+4 move container to workspace 4
+    bindsym $mod+Shift+5 move container to workspace 5
+    bindsym $mod+Shift+6 move container to workspace 6
+    bindsym $mod+Shift+7 move container to workspace 7
+    bindsym $mod+Shift+8 move container to workspace 8
+    bindsym $mod+Shift+9 move container to workspace 9
+    bindsym $mod+Shift+0 move container to workspace 10
+    # Note: workspaces can have any name you want, not just numbers.
+    # We just use 1-10 as the default.
+#
+# Layout stuff:
+#
+    # You can "split" the current object of your focus with
+    # $mod+b or $mod+v, for horizontal and vertical splits
+    # respectively.
+    bindsym $mod+b splith
+    bindsym $mod+v splitv
+
+    # Switch the current container between different layout styles
+    bindsym $mod+s layout stacking
+    bindsym $mod+w layout tabbed
+    bindsym $mod+e layout toggle split
+
+    # Make the current focus fullscreen
+    bindsym $mod+f fullscreen
+    #poner aplicaciones flotantes
+    #for_window [app_id="gnome-terminal"] floating enable, resize set width 40 ppt height 40 ppt, move position 0 px 0 px
+    # Toggle the current focus between tiling and floating mode
+    bindsym $mod+Shift+space floating toggle
+
+    # Swap focus between the tiling area and the floating area
+    bindsym $mod+space focus mode_toggle
+
+    # Move focus to the parent container
+    bindsym $mod+a focus parent
+#
+# Scratchpad:
+#
+    # Sway has a "scratchpad", which is a bag of holding for windows.
+    # You can send windows there and get them back later.
+
+    # Move the currently focused window to the scratchpad
+    bindsym $mod+Shift+minus move scratchpad
+
+    # Show the next scratchpad window or hide the focused scratchpad window.
+    # If there are multiple scratchpad windows, this command cycles through them.
+    bindsym $mod+minus scratchpad show
+#
+# Resizing containers:
+#
+mode "resize" {
+    # left will shrink the containers width
+    # right will grow the containers width
+    # up will shrink the containers height
+    # down will grow the containers height
+    bindsym $left resize shrink width 20px
+    bindsym $down resize grow height 20px
+    bindsym $up resize shrink height 20px
+    bindsym $right resize grow width 20px
+
+    # Ditto, with arrow keys
+    bindsym Left resize shrink width 20px
+    bindsym Down resize grow height 20px
+    bindsym Up resize shrink height 20px
+    bindsym Right resize grow width 20px
+
+    # Return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+#Poner en pantalla completa una aplicacion
+bindsym $mod+r mode "resize"
+#/////////////////////////////////////////////// Lanzador de aplicaciones
+	 #Rofi lanzador de aplicaciones(gracias a zatiel)
+	 #seleccionar temas
+	 #rofi-theme-selector
+ 
+  	#obtendremos muy rápidamente la búsqueda de la aplicación
+ 	 # a utilizar y su posterior ejecución
+ 	 #ver temas instalados
+ 	 #cd /usr/share/rofi/themes/
+ 	 #Seleccionar temas desde terminal
+ 	 #rofi-theme-selector
+	 bindsym $mod+x exec rofi -show drun -sidebar-mode -opacity "20" -columns 1 
+ 	 #podemos acceder rápidamente a la ventana de cualquier aplicación que 
+ 	 #se encuentre en curso, con independencia del escritorio en donde se encuentre.
+ 	 bindsym $mod+c exec  rofi -show window -sidebar-mode -opacity "40" -columns 1
+ 	 #Muestra las apps y la descripción del mismo, disponible desde sus  archivos .desktop
+  	bindsym $mod+Shift+t  exec  rofi -show run -sidebar-mode -opacity "30" -columns 1
+  	# consultar rápida en cuanto a las teclas y su función
+ 	 bindsym $mod+Shift+d  exec rofi -show keys -opacity "30" -columns 1
+  	#///////////////////////////////////////////////
+#
+# Status Bar:
+#
+# Read `man 5 sway-bar` for more information about this section.
+bar {
+  
+    position top
+    swaybar_command waybar 
+    status_command pkill -9 waybar && waybar
+    # When the status_command prints a new line to stdout, swaybar updates.
+    # The default just shows the current date and time.
+    #status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
+	#colores
+    colors {
+        statusline #ffffff
+        background #323232
+        inactive_workspace #32323200 #32323200 #5c5c5c
+    }
+    
+}
+
+include /etc/sway/config.d/*

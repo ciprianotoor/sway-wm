@@ -1,0 +1,412 @@
+/* 
+## Configuracion para Waybar
+## Autor:
+## Cipriano Javier Perez Garcia
+## ciprianotoor@gmail.com
+## https://github.com/
+## Version:
+## v0.01
+*/
+/*Pantalla de portatil*/
+{
+    "output": "eDP-1",/*ver este escritorio en pantalla de portatil*/
+    "margin": "5px 5px 5px 10px",/*arriba,izquierda,derecha,abajo*/
+    "layer":"bottom",/*top|bottom|left|right)*/
+    "height": 30,/*Altura*/
+    "name": "top",/*(top|bottom|left|right)*/
+    "position": "top",//Posicion de Waybar  (top|bottom|left|right)
+        /* Modulos a la derecha */
+"modules-left": ["sway/workspaces"],
+        /*modulos izquierda*/
+"modules-center": ["clock","custom/weather","cpu","memory","disk","battery","battery#bat2","network","temperature","custom/wf-recorder","custom/youtube-dl","custom/curseradio","idle_inhibitor","custom/calc-bc","custom/telegram-cli","tray","backlight","pulseaudio","custom/mc","custom/music-launch"],
+        /*modulos derecha*/
+"modules-right": ["custom/cmus","custom/Musica"],
+ "sway/mode": {"format": "<span style=\"italic\">{}</span>"
+        /*"format": ""*/
+    },
+         /*Espacios de trabajo*/
+    "sway/workspaces":             {
+       "disable-scroll": false,
+        "all-outputs": false,
+        "disable-markup": false,
+        "format":"{name}{icon}",
+        "format-icons": {
+            "1": "",
+            "2": "爵",
+            "3": "",
+            "4": "",
+            "5": "",
+            "6": "!!",
+            "7": "",
+            "8": "蓼",
+            "9": "",
+            "10": "〇",
+            "default":  "",
+            "urgent": "",
+            "focused": "",
+            "default": ""
+                         }
+                               },
+          /*Estado del teclado*/
+         "keyboard-state": {
+    "numlock": true,
+    "capslock": true,
+    "format": "{name} {icon}",
+    "format-icons": {
+        "locked": "11",
+        "unlocked": ""
+                    }
+                           },
+                   /*Clima*/
+        "custom/weather": {
+        "on-click":"gnome-weather",
+        "format": "{}",
+        "format-alt": "{alt}: {}",
+        "format-alt-click": "click-right",
+        "interval": 1800,
+        "return-type":"json",
+        "exec": "~/.config/waybar/modules/weather.sh",
+        "exec-if": "ping wttr.in -c1"
+                         },
+         
+        /*protector de pantalla*/ 
+"idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+                        }
+                  },
+        /*Bandeja*/
+"tray": {
+        "icon-size": 14,
+        "spacing": 2,
+        "tooltip": true
+            },   		
+        /*Disco duro*/
+    "disk":     {
+    "interval": 30,
+    "format":"🖴",
+    "format-alt": "🖴Home:L:{percentage_free}% U:{percentage_used}%", 
+    "tooltip": true,
+    "path": "/home"
+                },     
+        /*Reloj, Informacion del tiempo*/
+    "clock": {
+        "timezone":"America/Managua",
+        "format-alt":"🗓️{:%d:%m:%Y de las ⌚%I:%M:%S %P}",
+        "format":"🇳🇮",
+        "tooltip-format":"{:%d:%m:%Y de las ⌚%I:%M:%S %P}",         
+        "tooltip": true,
+        "on-click-right":"gnome-clocks",
+        "on-click-middle": "gnome-calendar",
+        "on-scroll-up":"i3-sensible-terminal --class floating -e cal",
+        "interval": 1
+        //"format-alt": "{:%d %b de %Y de las %I:%M:%P}",
+             },
+        /*Informacion y acciones con la cpu*/   
+    "cpu": {
+         "format":"",
+       "format-alt":"CPU:{usage}%:Usado",
+        "tooltip": true,
+        "tooltip-format":"<big>{usage}%<big>"
+           },
+        /*Informacion y acciones con la memoria ram*/ 
+    "memory": {
+        //"format":"{}% Mem"
+        "format": "⚙️",
+        "interval": 30,
+	"format-alt":"⚙️Usada: {used:0.1f}G :{}% Tot_Mem:{total:0.1f}G ",
+	"on-click-middle": "gnome-system-monitor",
+	"on-scroll-up":"i3-sensible-terminal --class floating -e htop",
+        "on-scroll-down": "i3-sensible-terminal --class floating -e top",
+	"tooltip": true,
+	"tooltip-format":"Mem-Usa: {usad:0.1f}G Total:{total:0.1f}G "
+             },
+        /*Informacion y acciones con la temperatura*/ 
+    "temperature": {
+        // "thermal-zone": 2,
+        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+        "critical-threshold": 60,
+        "format-critical": "{temperatureC}°C {icon} :🥵🔥",
+        "format": "",
+        "format-alt":"{temperatureC}°C:{temperatureF}°F",
+        "format-icons": ["", "", ""],
+        "tooltip": true
+        //"on-click": "swaynag -t warning -m '¿Que desea hacer?' -b 'Cerrar Sesion' 'swaymsg exit'  -b 'Apagar' 'shutdown now'"
+                   },
+           /*Informacion y acciones con el brillo*/ 
+    "backlight": {
+        // "device": "acpi_video1",
+        "on-scroll-up": "brightnessctl set +1%",
+       "on-scroll-down": "brightnessctl set 1%-",
+       //"format":"💡",
+       "format":"🕯️",
+       "format-alt":"{icon} {percent}% ",
+        "format-icons": ["ahorro","","","💡"],
+        "on-click-middle": "swaylock",
+        "tooltip": true
+                 },
+               /*Informacion y acciones con la bateria del portatil*/ 
+    "battery": {
+        "states": {
+             "ok":100,
+             "Bien": 95,
+            "Baja": 30,
+            "Cargar": 15
+                  },
+        "design-capacity":"true",
+        "format": " {icon} {capacity}%",
+        "format-charging": "  {capacity}% {time}",
+        "format-plugged": "Cargador: {capacity}%",
+        "format-alt": "{icon} {time}",
+        "format-good": "Buena", // An empty format will hide the module
+        "format-full": "",
+        "interval": 10,
+        "format-icons": [" ", "", "", "", " "],
+        "format-time":"TE:{H}:Hrs{M}:Mnts",
+        "tooltip":true,
+        "on-click-middle": "gnome-power-statistics"
+              },
+    "battery#bat2": {
+        "bat": "BAT2"
+    },
+      
+    "pulseaudio": {
+        // "scroll-step": 1, // %, can be a float
+        //"format": "{volume}% {icon} {format_source}",
+        "format": "{icon}{volume}%  {format_source}",
+        "format-bluetooth": "{volume}% {icon} {format_source} {desc}",        
+        "format-bluetooth-muted": "Silencio🔇 {icon} {format_source}{desc}",        
+        "format-muted": "Silencio🔇 {volume}%{format_source}",
+        //"format-source": "{volume}% ",
+        "format-source": "",
+        "format-source-muted": " ",
+          "format-icons": {
+            "headphone": " 🎧",
+            "hands-free": "🎧",
+            "headset": "🎧",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["🔈","🔉","🔊"]
+        		   },
+        /*"on-click": "amixer set Master toggle",*/
+        "on-click-middle":"pavucontrol", 
+        "on-click-right":  "i3-sensible-terminal --class floating -e alsamixer",
+        "on-click": "env XDG_CURRENT_DESKTOP=GNOME gnome-control-center sound"    
+    		},
+    		  /*Informacion y acciones con la conexion de red del portatil*/ 
+    "network": {
+        // "interface": "wlp2*", // (Optional) To force the use of this interface
+        "format-wifi": "",
+        //"format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
+        //"format-ethernet": "{ipaddr} ",
+        "format-ethernet": "🏠",
+        "format-linked": "{ifname} (No IP){ipaddr} ",
+        "format-disconnected": "⚠ Desconectada",
+        "format-alt": "{ifname}: {essid} {signalStrength}%  Ip:{ipaddr}/{cidr}",
+        "tooltip-format": "{essid}\r{ipaddr}",
+        "interval": 1,
+         "on-click-middle": "exec i3-sensible-terminal -e nmtui",
+         "on-click-right": "env XDG_CURRENT_DESKTOP=GNOME gnome-control-center wifi",
+         "on-scroll-up": "env XDG_CURRENT_DESKTOP=GNOME gnome-control-center network" 
+    },
+"mpd": {//sudo apt install mpd
+    "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ",
+    "format-disconnected": "Disconnected ",
+    "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
+    "interval": 10,
+    "consume-icons": {
+        "on": " " // Icon shows only when "consume" is on
+    },
+    "random-icons": {
+        "off": "<span color=\"#f53c3c\"></span> ", // Icon grayed out when "random" is off
+        "on": " "
+    },
+    "repeat-icons": {
+        "on": " "
+    },
+    "single-icons": {
+        "on": "1 "
+    },
+    "state-icons": {
+        "paused": "",
+        "playing": ""
+    },
+    "tooltip-format": "MPD (connected)",
+    "tooltip-format-disconnected": "MPD (disconnected)"
+} ,
+    /*Modulos personales*/ 
+      "custom/bluetooth-battery": {
+    "format": "🔋️BB:{}",
+    "return-type": "json",
+    "interval": 5,
+    "exec": "~/.config/waybar/modules/bluetooth-battery.sh",
+    "exec-if": "bluetooth_battery_status.sh >/dev/null 2>&1",
+    "signal": 9
+  },
+    
+    "custom/reiniciar": {
+ 	"format": "🌀", 
+ 	"on-click-middle": "exec systemctl reboot"},
+    
+    "custom/suspender": {
+ 	"format": "💤", 
+ 	"on-click-middle": "exec systemctl suspend"},
+ 	
+    "custom/power": {
+	"format": "⏻", 
+	"format-alt": "⏻",
+	 "on-click": "swaynag -t warning -m '¿Que desea hacer?' -b 'Cerrar Sesion' 'swaymsg exit' -b 'Suspender' 'swaymsg exec systemctl suspend' -b 'Apagar' 'poweroff' -b 'Reiniciar' 'systemctl reboot' -b 'Bloquear ' 'swaylock'"
+	            },
+
+        "custom/mc": {
+        "format": "🗄️", 
+        "on-click": "exec i3-sensible-terminal -e mc /home/cipriano"
+                     },
+ 
+        "custom/whapsap": {
+        "format": "🍐", 
+        "on-click": "exec i3-sensible-terminal -e google-chrome-stable --app=https://web.whatsapp.com/"},
+ 
+        "custom/synaptic": {
+        "format": "🏗️", 
+        "on-click": "exec i3-sensible-terminal -e sudo  synaptic"
+                           },
+ 		
+         "custom/code":{
+        "format": "💻",
+        "on-click": "code",
+        "tooltip": true
+                        },
+ 
+        "custom/gedit":{
+        "format": "📝",
+        "on-click": "gedit",
+        "tooltip": true
+                        },
+                        
+        "custom/arduino":{
+        "format": "🤠",
+        "on-click": "arduino"
+                        },
+        "custom/Google-chrome":{
+        "format":"🌐",
+        "on-click": "google-chrome",
+        "tooltip": true
+                                },
+        "custom/Nautilus":{
+        "format": "📁",
+        "on-click": "nautilus",
+        "tooltip": true
+                          },
+ 
+        "custom/libreoffice":{
+        "format": "✍️",
+        "on-click": "libreoffice",
+        "tooltip": true
+                             },
+        
+        "custom/equalizador":{
+        "format": "🎚️",
+        "on-click": "pulseeffects",
+        "tooltip": true
+                             },
+           /*Musica*/                  
+        "custom/Musica":{
+        "format":"{}",
+        "escape": true,
+        "exec": "bash $HOME/.config/waybar/modules/music_metadata.sh && playerctl metadata --format '{{uc(playerName)}}:{{emoji(status)}}:{{ duration(position) }} ' --follow",
+        //"exec": "playerctl metadata --format '{{uc(playerName)}}:{{emoji(status)}}:{{ duration(position) }} ' --follow",
+        "interval": 1,
+        "on-click-middle": "playerctl stop",
+        "on-click": "playerctl play-pause",
+        "on-scroll-up":"playerctl next",
+        "on-scroll-down": "playerctl previous",
+        "tooltip": true
+                        },
+                        
+         "custom/cmus":{
+         "format":  "{}",    //"max-length": 15,,
+         "format-alt":"{}",
+         "on-click": " cmus-remote -u",
+         "on-click-middle": "pulseeffects",
+         "on-click-right":"cmus-remote -s",
+         "interval": 1,
+         "on-scroll-up":"cmus-remote -n",
+         "on-scroll-down": "cmus-remote -r",
+         "exec": "bash $HOME/.config/waybar/modules/cmus-metadata.sh",
+         "exec-if": "pgrep cmus"
+         },
+  "custom/music-launch":{
+          "format":"🎵️", 
+          "format-alt":"cmus",
+          "on-click":"exec i3-sensible-terminal -e cmus",
+          "on-click-right":"spotify" ,
+          "on-click-middle": "pulseeffects",
+          "on-scroll-up":"exec i3-sensible-terminal --class floating -e cmus-lyrics", 
+          "on-scroll-down":"exec i3-sensible-terminal --class floating -e cava"
+                        },
+                        
+        "custom/Juego":{
+        "format": "🎮",
+        "format-alt":"Warzone2100:",
+        "on-click": "warzone2100",
+        "tooltip": true
+                        },
+                        
+         "custom/vlc": {
+        "format": "🎬",
+        "on-click": "exec i3-sensible-terminal -e vlc -I curses /home/cipriano/Vídeos"		
+	},
+        "custom/gnome-calc":{
+        "format":"🖩",
+        "on-click": "gnome-calculator"
+                            },
+     	"custom/telegram": {
+        "format": "💬",
+        "on-click": "telegram-desktop"
+	                    },
+	                    
+        "custom/anydesk": {
+        "format": "📡",
+        "on-click": "anydesk"
+	                  },
+	                  
+        "custom/webcam": {
+        "format": "📷",
+        "on-click": " exec i3-sensible-terminal -e cvlc v4l2:///dev/video0"
+	},	
+        "custom/lynx": {
+        "format": "🕸️",
+        "on-click": "exec i3-sensible-terminal -e lynx www.google.com.ni -accept_all_cookies"
+	},
+		
+        "custom/curseradio": {
+        "format": "📻",
+        "on-click": "exec i3-sensible-terminal -e curseradio"
+	},
+	                      		
+        "custom/wf-recorder": {
+        "format": "",
+        "format-alt":"🔴",
+        "on-click": "bash $HOME/scripts/toggle-screen-recorder_custom.sh",
+        "on-click-right": " nautilus /home/cipriano/Vídeos/wf-recorder "
+	                       },
+        "custom/calc-bc": {
+        "format": "🖩",
+        "on-click": "exec i3-sensible-terminal -e bc"
+	                  },
+        "custom/youtube-dl": {
+        "format": "⬇️",
+        "on-click": "exec i3-sensible-terminal -e bash /home/cipriano/.config/waybar/modules/youtube-dl.sh"
+	                  }  
+	                  ,
+        "custom/telegram-cli": {
+        "format": "☎️",
+        "on-click": "exec i3-sensible-terminal -e telegram-cli"
+	                  }
+		}
+
+
